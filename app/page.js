@@ -8,7 +8,7 @@ export default function Home() {
       <div className="flex justify-between mb-4">
         <div className="flex">
           <h2>Activities</h2>
-          <input value="sd" className="rounded-lg ml-4" />
+          <input className="rounded-lg ml-4" />
           <input
             type="datetime-local"
             className="ml-4 rounded-lg px-4 text-black"
@@ -20,7 +20,13 @@ export default function Home() {
       </div>
       <KeyMetrics />
       {/* Table section */}
-      <DataTable />
+      <div className="grow overflow-scroll flex flex-col">
+        <div className="flex mb-4 items-center">
+          <h4>All Records</h4>
+          <h4 className="ml-4 text-gray-700">Recurring</h4>
+        </div>
+        <DataTable />
+      </div>
     </MainLayout>
   );
 }

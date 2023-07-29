@@ -1,13 +1,14 @@
 import DataTable from "../components/dataTable";
 import MainLayout from "../components/layouts/mainLayout";
 import Modal from "../components/layouts/modal";
+import AddPropertyForm from "./components/addPropertyForm";
 
 export default function Properties() {
   return (
     <MainLayout currentPage="properties">
       {/* Modal */}
-      <Modal hidden={true}>
-        <p>hihi</p>
+      <Modal hidden={false} formName="Add a property">
+        <AddPropertyForm />
       </Modal>
       <div className="flex justify-between mb-4">
         <div className="flex">
@@ -18,7 +19,9 @@ export default function Properties() {
         </button>
       </div>
       <div className=" grid grid-cols-3 gap-2">
-        <div className="border-2 h-64 rounded-lg border-gray-500 border-dashed flex justify-center items-center cursor-pointer text-center"><p>+ Add a property</p></div>
+        <div className="border-2 h-64 rounded-lg border-gray-500 border-dashed flex justify-center items-center cursor-pointer text-center">
+          <p>+ Add a property</p>
+        </div>
       </div>
     </MainLayout>
   );

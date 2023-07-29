@@ -1,18 +1,12 @@
 export default function DataTable() {
   return (
-    <div className="grow overflow-scroll flex flex-col">
-      <div className="flex justify-between mb-4 items-center">
-        <h4>All Records</h4>
-        <div>
-          <button className="px-4 border rounded-lg h-8 text-sm">Export all fitlered</button>
-        </div>
-      </div>
+    <>
       <input
         className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100 text-black"
         placeholder="Search by the amount and summary"
       ></input>
       <div className="grow overflow-scroll">
-        <table className="w-full text-left bg-gray-800 rounded-lg">
+        <table className="w-full text-left bg-gray-800 rounded-lg mb-4" >
           <thead className="border-b">
             <tr>
               <th className="px-4 py-2">ID</th>
@@ -109,7 +103,12 @@ export default function DataTable() {
             </tr>
           </tbody>
         </table>
+        <div>
+          <button className="px-4 border rounded-lg h-8 text-sm">
+            Export all fitlered
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
