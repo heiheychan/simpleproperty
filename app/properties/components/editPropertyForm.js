@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import validator from "validator";
 
-export default function AddPropertyForm({ open, setOpen }) {
+export default function EditPropertyForm({ property, open, setOpen }) {
   const [formInputs, setFormInputs] = useState({
     display_name: "",
     address: "",
@@ -18,10 +18,10 @@ export default function AddPropertyForm({ open, setOpen }) {
 
   useEffect(() => {
     setFormInputs({
-      display_name: "",
-      address: "",
-      unit: "",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+      display_name: property.display_name,
+      address: property.address,
+      unit: property.unit,
+      color: property.color,
     });
   }, [open]);
 
@@ -60,14 +60,15 @@ export default function AddPropertyForm({ open, setOpen }) {
     }
 
     setLoading(true);
-    const response = await axios.post("/api/property", {
-      ...formInputs,
-    });
+    // Need to add the update API
+    // const response = await axios.post("/api/property", {
+    //   ...formInputs,
+    // });
     setLoading(false);
     if (response.status !== 200) {
-      toast.error("Failed to create a property");
+      toast.error("Failed to edit a property");
     } else {
-      toast.success("Created a property");
+      toast.success("Edited a property");
       setFormInputs({
         display_name: "",
         address: "",
@@ -126,7 +127,7 @@ export default function AddPropertyForm({ open, setOpen }) {
           className="px-6 py-2 flex justify-center items-center text-sm font-bold rounded-lg bg-gradient-to-r from-teal-200 to-lime-200 text-gray-700"
           onClick={onSubmitHandler}
         >
-          {!loading ? "Add property" : <Spinner />}
+          {!loading ? "Edit property" : <Spinner />}
         </button>
       </div>
     </>
