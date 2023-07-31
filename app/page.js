@@ -14,7 +14,7 @@ export default function Home() {
             className="ml-4 rounded-lg px-4 text-black"
           />
         </div>
-        <button class="px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-br from-green-400 to-blue-600">
+        <button className="px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-br from-green-400 to-blue-600">
           Add Record
         </button>
       </div>

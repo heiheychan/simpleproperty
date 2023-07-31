@@ -15,40 +15,40 @@ export default function SideBar({ currentPage }) {
         <div className="flex flex-col">
           <Link
             href="/"
-            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-500 ${
-              currentPage === "activities" && "bg-gray-500"
+            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
+              currentPage === "activities" && "bg-gray-700"
             }`}
           >
             Activities
           </Link>
           <Link
             href="#"
-            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-500 ${
-              currentPage === "directory" && "bg-gray-500"
+            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
+              currentPage === "directory" && "bg-gray-700"
             }`}
           >
             Directory
           </Link>
           <Link
             href="#"
-            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-500 ${
-              currentPage === "leases" && "bg-gray-500"
+            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
+              currentPage === "leases" && "bg-gray-700"
             }`}
           >
             Leases
           </Link>
           <Link
             href="/properties"
-            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-500 ${
-              currentPage === "properties" && "bg-gray-500"
+            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
+              currentPage === "properties" && "bg-gray-700"
             }`}
           >
             Properties
           </Link>
           <Link
             href="#"
-            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-500 ${
-              currentPage === "settings" && "bg-gray-500"
+            className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
+              currentPage === "settings" && "bg-gray-700"
             }`}
           >
             Settings

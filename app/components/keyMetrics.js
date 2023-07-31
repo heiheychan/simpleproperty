@@ -12,7 +12,7 @@ export default function KeyMetrics() {
           <h4>$2,230.00</h4>
         </div>
         <div className="flex flex-col border-2 rounded-lg border-gray-500 px-12 pt-6 pb-10 basis-1/3">
-          <p className="text-purple-500 font-bold">Net</p>
+          <p className="bg-clip-text text-transparent  font-bold bg-gradient-to-r from-purple-400 to-pink-600">Net amount</p>
           <h4>$10,000.00</h4>
         </div>
       </div>
