@@ -14,7 +14,6 @@ export default function Properties() {
   const [modalOpen, setModalOpen] = useState(false);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [editMode, setEditMode] = useState(false);
   const [editing, setEditing] = useState(false);
 
   const fetchProperties = async () => {
@@ -27,7 +26,7 @@ export default function Properties() {
   useEffect(() => {
     fetchProperties();
     if (modalOpen === false) {
-      setEditMode(false);
+      setEditing(false);
     }
   }, [modalOpen]);
 
@@ -49,13 +48,12 @@ export default function Properties() {
     });
     
     setEditing(result[0])
-    setEditMode(true);
     setModalOpen(true);
   };
 
   return (
     <MainLayout currentPage="properties">
-      {!editMode && (
+      {!editing && (
         <Modal
           open={modalOpen}
           setOpen={setModalOpen}
@@ -64,7 +62,7 @@ export default function Properties() {
           <AddPropertyForm open={modalOpen} setOpen={setModalOpen} />
         </Modal>
       )}
-      {editing && editMode && (
+      {editing && (
         <Modal
           open={modalOpen}
           setOpen={setModalOpen}
@@ -130,7 +128,7 @@ export default function Properties() {
         <div
           className="border-2 h-64 rounded-lg border-gray-500 border-dashed flex justify-center items-center cursor-pointer text-center"
           onClick={() => {
-            setEditMode(false);
+            setEditing(false);
             setModalOpen(true);
           }}
         >

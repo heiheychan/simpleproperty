@@ -2,6 +2,7 @@
 
 import Input from "@/app/components/ui/Input";
 import Spinner from "@/app/components/ui/Spinner";
+import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,6 +16,8 @@ export default function EditPropertyForm({ property, open, setOpen }) {
     color: "#" + Math.floor(Math.random() * 16777215).toString(16),
   });
   const [loading, setLoading] = useState(false);
+  const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
+  usePlacesService({ debounce: 500 });
 
   useEffect(() => {
     setFormInputs({
@@ -23,10 +26,18 @@ export default function EditPropertyForm({ property, open, setOpen }) {
       unit: property.unit,
       color: property.color,
     });
+    getPlacePredictions("")
   }, [open]);
 
   const onInputHandler = (e) => {
     const copyFormInputs = { ...formInputs };
+    copyFormInputs[e.target.name] = e.target.value;
+    setFormInputs(copyFormInputs);
+  };
+
+  const onAddressInputHandler = (e) => {
+    const copyFormInputs = { ...formInputs };
+    getPlacePredictions({ input: e.target.value });
     copyFormInputs[e.target.name] = e.target.value;
     setFormInputs(copyFormInputs);
   };
@@ -95,8 +106,12 @@ export default function EditPropertyForm({ property, open, setOpen }) {
           name="address"
           label="Address"
           placeholder="93 18th Street, Jersey City, NJ 07310"
-          onChangeHandler={onInputHandler}
+          onChangeHandler={onAddressInputHandler}
+          setValue={setFormInputs}
           value={formInputs.address}
+          loading={isPlacePredictionsLoading}
+          suggestions={placePredictions}
+          setSuggestions={getPlacePredictions}
         />
         <Input
           type="text"
