@@ -89,7 +89,7 @@ export default function Properties() {
           Add Property
         </button>
       </div>
-      <div className=" grid grid-cols-3 gap-2">
+      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {properties.length > 0 &&
           properties.map((property) => (
             <div
@@ -107,7 +107,7 @@ export default function Properties() {
               <p>Unit: {property.unit === "" ? "-" : property.unit}</p>
               <div className="mt-6 flex justify-center gap-2 w-full">
                 <button
-                  className="border-2 border-gray-800 rounded-lg px-3 py-1"
+                  className="border-2 text-slate-500 border-slate-500 rounded-lg px-2 py-1"
                   onClick={() => {
                     editFormHandler(property.id);
                   }}
@@ -115,7 +115,7 @@ export default function Properties() {
                   Edit
                 </button>
                 <button
-                  className="border-2 border-gray-800 rounded-lg px-3 py-1"
+                  className="border-2 text-red-500 border-red-500 rounded-lg px-2 py-1"
                   onClick={() => {
                     propertyDeleteHandler(property.id);
                   }}

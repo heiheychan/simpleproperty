@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 export default function Input({
   label,
   name,
@@ -10,17 +12,64 @@ export default function Input({
   onChangeHandler,
   loading,
   suggestions,
-  setSuggestions,
 }) {
-  const selectSuggestionHandler = (val) => {
-    setValue((old) => {
-      return { ...old, address: val };
+  const inputRef = useRef();
+  const [suggestionState, setSuggestionState] = useState({
+    activeOption: 0,
+    showOptions: Boolean(suggestions) && value && value.length > 0,
+  });
+
+  const toggleOptions = (boo) => {
+    setSuggestionState((old) => {
+      return { ...old, showOptions: boo };
     });
-    setSuggestions("");
+  };
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        toggleOptions(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+  }, []);
+
+  useEffect(() => {
+    if (suggestions && suggestions.length > 0) {
+      toggleOptions(true);
+    }
+  }, [suggestions]);
+
+  const onKeyDownHandler = (e) => {
+    if (e.keyCode === 13) {
+      const content = suggestions[suggestionState.activeOption].description;
+      setValue(name, content);
+      toggleOptions(false);
+    } else if (e.keyCode === 40) {
+      if (suggestionState.activeOption === suggestions.length - 1) {
+        return;
+      }
+      setSuggestionState((old) => {
+        return { ...old, activeOption: old.activeOption + 1 };
+      });
+    } else if (e.keyCode === 38) {
+      if (suggestionState.activeOption === 0) {
+        return;
+      }
+      setSuggestionState((old) => {
+        return { ...old, activeOption: old.activeOption - 1 };
+      });
+    }
+  };
+
+  const onClickHandler = (e) => {
+    const content = e.target.innerText;
+    setValue(name, content);
+    toggleOptions(false);
   };
 
   return (
-    <div className="flex flex-col mb-2 relative">
+    <div className="flex flex-col mb-2 relative" ref={inputRef}>
       <label className="mb-2">{label}</label>
       <input
         loading={String(loading)}
@@ -30,16 +79,17 @@ export default function Input({
         value={value}
         onChange={onChangeHandler}
         placeholder={placeholder}
+        onKeyDown={onKeyDownHandler}
       />
-      {suggestions && suggestions.length > 0 && (
+      {suggestionState.showOptions && (
         <ul className="absolute flex flex-col bg-black top-24 rounded-lg w-full z-30 border border-gray-600 p-2">
-          {suggestions.map((item) => (
+          {suggestions.map((item, index) => (
             <li
               key={item.place_id}
-              className="px-4 py-2 text-sm hover:bg-gray-700 rounded-lg cursor-pointer"
-              onClick={() => {
-                selectSuggestionHandler(item.description);
-              }}
+              className={`${
+                index === suggestionState.activeOption && "bg-gray-700"
+              } px-4 py-2 text-sm hover:bg-gray-700 rounded-lg cursor-pointer`}
+              onClick={onClickHandler}
             >
               {item.description}
             </li>

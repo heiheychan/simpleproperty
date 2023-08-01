@@ -17,7 +17,10 @@ export default function AddPropertyForm({ open, setOpen }) {
   });
   const [loading, setLoading] = useState(false);
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
-    usePlacesService({ debounce: 500 });
+    usePlacesService({
+      debounce: 500,
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACE_API,
+    });
 
   useEffect(() => {
     setFormInputs({
@@ -26,7 +29,7 @@ export default function AddPropertyForm({ open, setOpen }) {
       unit: "",
       color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     });
-    getPlacePredictions("")
+    getPlacePredictions("");
   }, [open]);
 
   const onInputHandler = (e) => {
@@ -89,6 +92,12 @@ export default function AddPropertyForm({ open, setOpen }) {
     }
   };
 
+  const setValueHandler = (key, val) => {
+    let copyInput = { ...formInputs };
+    copyInput[key] = val;
+    setFormInputs(copyInput);
+  };
+
   return (
     <>
       <div className="p-6 border-b-2 border-gray-800">
@@ -96,7 +105,7 @@ export default function AddPropertyForm({ open, setOpen }) {
           type="text"
           name="display_name"
           label="Display name"
-          placeholder="93 18th St."
+          placeholder="Brooklyn Tower #18C"
           onChangeHandler={onInputHandler}
           value={formInputs.display_name}
         />
@@ -104,9 +113,9 @@ export default function AddPropertyForm({ open, setOpen }) {
           type="text"
           name="address"
           label="Address"
-          placeholder="93 18th Street, Jersey City, NJ 07310"
+          placeholder="55 Fleet St, Brooklyn, NY 11201"
           onChangeHandler={onAddressInputHandler}
-          setValue={setFormInputs}
+          setValue={setValueHandler}
           value={formInputs.address}
           loading={isPlacePredictionsLoading}
           suggestions={placePredictions}
@@ -116,7 +125,7 @@ export default function AddPropertyForm({ open, setOpen }) {
           type="text"
           name="unit"
           label="Unit"
-          placeholder="Unit. 811"
+          placeholder="Apt 18C"
           onChangeHandler={onInputHandler}
           value={formInputs.unit}
         />
