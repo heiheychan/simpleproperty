@@ -13,10 +13,10 @@ export default function Input({
   loading,
   suggestions,
 }) {
-  const inputRef = useRef();
+  const inputRef = useRef(null);
   const [suggestionState, setSuggestionState] = useState({
     activeOption: 0,
-    showOptions: Boolean(suggestions) && value && value.length > 0,
+    showOptions: Boolean(suggestions) && value,
   });
 
   const toggleOptions = (boo) => {

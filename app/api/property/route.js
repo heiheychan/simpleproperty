@@ -20,12 +20,10 @@ export async function POST(request) {
 }
 
 export async function GET(request) {
-  let response;
   try {
-    response = await prisma.property.findMany({});
+    const response = await prisma.property.findMany({});
+    return new Response(JSON.stringify(response), { status: 200 });
   } catch (e) {
     return new Response(JSON.stringify({ message: "fail" }), { status: 400 });
   }
-
-  return new Response(JSON.stringify(response), { status: 200 });
 }

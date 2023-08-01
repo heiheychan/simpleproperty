@@ -1,10 +1,22 @@
+"use client";
+
+import { useState } from "react";
 import DataTable from "./components/dataTable";
 import KeyMetrics from "./components/keyMetrics";
 import MainLayout from "./components/layouts/mainLayout";
+import Modal from "./components/layouts/modal";
+import AddRecordForm from "./components/forms/addRecordForm";
 
 export default function Home() {
+  const [addMode, setAddMode] = useState(false);
+
   return (
     <MainLayout currentPage="activities">
+      {addMode && (
+        <Modal formName="Add Record" open={addMode} setOpen={setAddMode}>
+          <AddRecordForm open={addMode} setOpen={setAddMode} />
+        </Modal>
+      )}
       <div className="flex justify-between mb-4">
         <div className="flex">
           <h2>Activities</h2>
@@ -14,7 +26,10 @@ export default function Home() {
             className="ml-4 rounded-lg px-4 text-black"
           />
         </div>
-        <button className="px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-br from-green-400 to-blue-600">
+        <button
+          className="px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-br from-green-400 to-blue-600"
+          onClick={() => setAddMode(true)}
+        >
           Add Record
         </button>
       </div>
