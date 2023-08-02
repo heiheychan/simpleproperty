@@ -1,4 +1,17 @@
-export default function DataTable() {
+import { useTable } from "react-table";
+
+export default function DataTable({ data, columns }) {
+  const {
+    getTableProps, // table props from react-table
+    getTableBodyProps, // table body props from react-table
+    headerGroups, // headerGroups, if your table has groupings
+    rows, // rows for the table based on the data passed
+    prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
+  } = useTable({
+    columns,
+    data,
+  });
+
   return (
     <>
       <input
@@ -6,101 +19,36 @@ export default function DataTable() {
         placeholder="Search by the amount and summary"
       ></input>
       <div className="grow overflow-scroll">
-        <table className="w-full text-left bg-gray-800 rounded-lg mb-4" >
+        <table
+          className="w-full text-left bg-gray-800 rounded-lg mb-4"
+          {...getTableProps()}
+        >
           <thead className="border-b">
-            <tr>
-              <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Amount</th>
-              <th className="px-4 py-2">Summary</th>
-              <th className="px-4 py-2">Created at</th>
-              <th className="px-4 py-2">Updated at</th>
-            </tr>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th className="px-4 py-2" {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
           </thead>
-          <tbody>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2">1</td>
-              <td className="px-4 py-2">3,200</td>
-              <td className="px-4 py-2">Rental Income</td>
-              <td className="px-4 py-2">02/10/2023</td>
-              <td className="px-4 py-2">02/11/2023</td>
-            </tr>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td className="px-4 py-2" {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div>

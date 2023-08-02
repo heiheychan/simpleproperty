@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function SideBar({ currentPage }) {
   return (
-    <div className="border-r-2 border-gray-800 w-[250px] h-full flex flex-col">
+    <div className="border-r-2 border-gray-800 basis-1/5 h-full flex flex-col">
       <div className="p-6 border-b-2 border-gray-800">
         <div className="flex flex-row justify-start items-center">
           <div className="h-10 w-10 rounded-full border flex justify-center items-center">

@@ -1,14 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "./components/dataTable";
 import KeyMetrics from "./components/keyMetrics";
 import MainLayout from "./components/layouts/mainLayout";
 import Modal from "./components/layouts/modal";
 import AddRecordForm from "./components/forms/addRecordForm";
+import axios from "axios";
+import { recordTableColumns } from "./data/recordTableColumns";
+import { useMemo } from "react";
 
 export default function Home() {
   const [addMode, setAddMode] = useState(false);
+  const [records, setRecords] = useState([]);
+  const columns = useMemo(() => recordTableColumns, []);
+
+  const fetchRecords = async () => {
+    const response = await axios.get("/api/record");
+    setRecords(response.data.response);
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, [addMode]);
 
   return (
     <MainLayout currentPage="activities">
@@ -40,7 +54,7 @@ export default function Home() {
           <h4>All Records</h4>
           <h4 className="ml-4 text-gray-700">Recurring</h4>
         </div>
-        <DataTable />
+        {records && <DataTable data={records} columns={columns} />}
       </div>
     </MainLayout>
   );

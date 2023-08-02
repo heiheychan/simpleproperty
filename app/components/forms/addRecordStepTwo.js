@@ -64,7 +64,7 @@ export default function AddRecordStepTwo({
         errorMessage: "Please select a property",
       },
       {
-        valid: validator.isLength(formInputs.type, { min: 1, max: 20 }),
+        valid: validator.isLength(formInputs.type, { min: 1, max: 100 }),
         errorMessage: "Type is not valid",
       },
       {
@@ -86,6 +86,8 @@ export default function AddRecordStepTwo({
     if (errors.length > 0) {
       return;
     }
+
+    console.log("addRecordStepTwo - before submitting: ", formInputs);
 
     const response = await axios.post("/api/record", {
       ...formInputs,
