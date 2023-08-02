@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { defaultIncomeTypes, defaultExpenseTypes } from "./defaultTypes";
 import Input from "../ui/Input";
 
@@ -10,6 +11,8 @@ export default function AddRecordStepTwo({
   flipPage,
   setOpen,
 }) {
+  const [incomeTypes, setIncomeTypes] = useState(defaultIncomeTypes);
+  const [expenseTypes, setExpenseTypes] = useState(defaultExpenseTypes);
   const setTypeHandler = (transaction_type) => {
     setFormInputs((old) => {
       return { ...old, transaction_type };
@@ -25,6 +28,21 @@ export default function AddRecordStepTwo({
   const onInputHandler = (e) => {
     const copyFormInputs = { ...formInputs };
     copyFormInputs[e.target.name] = e.target.value;
+
+    if (formInputs.transaction_type === "income") {
+      const results = defaultIncomeTypes.filter((income) => {
+        const lowerCaseIncome = income.description.toLowerCase();
+        return lowerCaseIncome.includes(e.target.value.toLowerCase());
+      });
+      setIncomeTypes(results);
+    } else {
+      const results = defaultExpenseTypes.filter((expense) => {
+        const lowerCaseExpense = expense.description.toLowerCase();
+        return lowerCaseExpense.includes(e.target.value.toLowerCase());
+      });
+      setExpenseTypes(results);
+    }
+
     setFormInputs(copyFormInputs);
   };
 
@@ -76,7 +94,11 @@ export default function AddRecordStepTwo({
             name="type"
             value={formInputs.type}
             onChangeHandler={onInputHandler}
-            suggestions={defaultIncomeTypes}
+            suggestions={
+              formInputs.transaction_type === "income"
+                ? incomeTypes
+                : expenseTypes
+            }
             setValue={setValue}
           />
           <Input

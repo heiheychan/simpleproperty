@@ -16,7 +16,7 @@ export default function Input({
   const inputRef = useRef(null);
   const [suggestionState, setSuggestionState] = useState({
     activeOption: 0,
-    showOptions: Boolean(suggestions) && value,
+    showOptions: false,
   });
 
   const toggleOptions = (boo) => {
@@ -32,11 +32,18 @@ export default function Input({
       }
     };
     document.addEventListener("click", handleClick);
+    return document.removeEventListener("click", handleClick);
   }, []);
 
   useEffect(() => {
-    if (suggestions && suggestions.length > 0) {
+    if (
+      document.activeElement === inputRef.current &&
+      suggestions &&
+      suggestions.length > 0
+    ) {
       toggleOptions(true);
+    } else {
+      toggleOptions(false);
     }
   }, [suggestions]);
 
@@ -69,9 +76,10 @@ export default function Input({
   };
 
   return (
-    <div className="flex flex-col mb-2 relative" ref={inputRef}>
+    <div className="flex flex-col mb-2 relative">
       <label className="mb-2">{label}</label>
       <input
+        ref={inputRef}
         loading={String(loading)}
         type={type}
         name={name}
@@ -80,12 +88,13 @@ export default function Input({
         onChange={onChangeHandler}
         placeholder={placeholder}
         onKeyDown={onKeyDownHandler}
+        onBlur={() => toggleOptions(false)}
       />
       {suggestionState.showOptions && (
         <ul className="absolute flex flex-col bg-black top-24 rounded-lg w-full z-30 border border-gray-600 p-2">
           {suggestions.map((item, index) => (
             <li
-              key={item.place_id}
+              key={index}
               className={`${
                 index === suggestionState.activeOption && "bg-gray-700"
               } px-4 py-2 text-sm hover:bg-gray-700 rounded-lg cursor-pointer`}
