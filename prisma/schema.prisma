@@ -16,7 +16,21 @@ model Property {
   address               String
   unit                  String
   color                 String
+  records               Record[]
   
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @updatedAt
+}
+
+model Record {
+  id                    Int           @id @default(autoincrement())
+  transaction_type      String
+  type                  String
+  amount                Float
+  notes                 String        @default("")
+  propertyId            Int
+  property              Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
 }

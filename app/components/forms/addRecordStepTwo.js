@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import validator from "validator";
 
 import { defaultIncomeTypes, defaultExpenseTypes } from "./defaultTypes";
 import Input from "../ui/Input";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function AddRecordStepTwo({
   formInputs,
@@ -44,6 +47,55 @@ export default function AddRecordStepTwo({
     }
 
     setFormInputs(copyFormInputs);
+  };
+
+  const onSubmitHandler = async () => {
+    let errors = [];
+    const validationSchema = [
+      {
+        valid: validator.isIn(formInputs.transaction_type, [
+          "income",
+          "expense",
+        ]),
+        errorMessage: "Transaction type is not valid",
+      },
+      {
+        valid: formInputs.property !== false,
+        errorMessage: "Please select a property",
+      },
+      {
+        valid: validator.isLength(formInputs.type, { min: 1, max: 20 }),
+        errorMessage: "Type is not valid",
+      },
+      {
+        valid: validator.isFloat(formInputs.amount, {
+          min: 0.0,
+          max: 1000000.0,
+        }),
+        errorMessage: "Amount is not valid",
+      },
+    ];
+
+    validationSchema.forEach((ele) => {
+      if (!ele.valid) {
+        toast.error(ele.errorMessage);
+        errors.push(!ele.valid);
+      }
+    });
+
+    if (errors.length > 0) {
+      return;
+    }
+
+    const response = await axios.post("/api/record", {
+      ...formInputs,
+      property: formInputs.property.id,
+    });
+
+    if (response.status === 200) {
+      toast.success("Created a record");
+      setOpen(false);
+    }
   };
 
   return (
@@ -136,7 +188,7 @@ export default function AddRecordStepTwo({
         </button>
         <button
           className="px-6 py-2 flex justify-center items-center text-sm font-bold rounded-lg bg-gradient-to-r from-teal-200 to-lime-200 text-gray-700"
-          onClick={() => flipPage(true)}
+          onClick={onSubmitHandler}
         >
           All set!
         </button>
