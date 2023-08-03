@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTable, useGlobalFilter } from "react-table";
 
 export default function DataTable({ data, columns }) {
@@ -29,35 +28,49 @@ export default function DataTable({ data, columns }) {
           setGlobalFilter(e.target.value);
         }}
       ></input>
-      <div className="grow overflow-scroll">
+      <div className="grow overflow-scroll text-sm">
         <table
           className="w-full text-left bg-gray-800 rounded-lg mb-4"
           {...getTableProps()}
         >
           <thead className="border-b">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, index) => (
-                  <th
-                    className="px-4 py-2"
-                    {...column.getHeaderProps({
-                      style: { minWidth: column.minWidth, width: column.width },
-                    })}
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
+            {headerGroups.map((headerGroup) => {
+              const { key, ...restHeadProps } =
+                headerGroup.getHeaderGroupProps();
+              return (
+                <tr key={key} {...restHeadProps}>
+                  {headerGroup.headers.map((column) => {
+                    const { key, ...restHeaderProps } = column.getHeaderProps({
+                      style: {
+                        minWidth: column.minWidth,
+                        width: column.width,
+                      },
+                    });
+
+                    return (
+                      <th className="px-4 py-2" key={key} {...restHeaderProps}>
+                        {column.render("Header")}
+                      </th>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
+            {rows.map((row) => {
               prepareRow(row);
+              const { key, ...restRowProps } = row.getRowProps();
               return (
-                <tr className="border-b border-gray-700 last:border-0" {...row.getRowProps()}>
+                <tr
+                  className="border-b border-gray-700 last:border-0"
+                  key={key}
+                  {...restRowProps}
+                >
                   {row.cells.map((cell) => {
+                    const { key, ...restCellProps } = cell.getCellProps();
                     return (
-                      <td className="px-4 py-2" {...cell.getCellProps()}>
+                      <td className="px-4 py-2" key={key} {...restCellProps}>
                         {cell.render("Cell")}
                       </td>
                     );

@@ -14,6 +14,7 @@ export default function Input({
   suggestions,
 }) {
   const inputRef = useRef(null);
+  const suggestionListRef = useRef(null);
   const [suggestionState, setSuggestionState] = useState({
     activeOption: 0,
     showOptions: false,
@@ -24,16 +25,6 @@ export default function Input({
       return { ...old, showOptions: boo };
     });
   };
-
-  useEffect(() => {
-    const handleClick = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
-        toggleOptions(false);
-      }
-    };
-    document.addEventListener("click", handleClick);
-    return document.removeEventListener("click", handleClick);
-  }, []);
 
   useEffect(() => {
     if (
@@ -69,9 +60,13 @@ export default function Input({
     }
   };
 
-  const onClickHandler = (e) => {
-    const content = e.target.innerText;
+  const onMouseDownHandler = (e) => {
+    const content = e.target.outerText;
     setValue(name, content);
+    toggleOptions(false);
+  };
+
+  const onBlurHandler = (e) => {
     toggleOptions(false);
   };
 
@@ -88,17 +83,20 @@ export default function Input({
         onChange={onChangeHandler}
         placeholder={placeholder}
         onKeyDown={onKeyDownHandler}
-        onBlur={() => toggleOptions(false)}
+        onBlur={onBlurHandler}
       />
       {suggestionState.showOptions && (
-        <ul className="absolute flex flex-col bg-black top-24 rounded-lg w-full z-30 border border-gray-600 p-2">
+        <ul
+          className="absolute flex flex-col bg-black top-24 rounded-lg w-full z-30 border border-gray-600 p-2"
+          ref={suggestionListRef}
+        >
           {suggestions.map((item, index) => (
             <li
               key={index}
+              onMouseDown={onMouseDownHandler}
               className={`${
                 index === suggestionState.activeOption && "bg-gray-700"
               } px-4 py-2 text-sm hover:bg-gray-700 rounded-lg cursor-pointer`}
-              onClick={onClickHandler}
             >
               {item.description}
             </li>

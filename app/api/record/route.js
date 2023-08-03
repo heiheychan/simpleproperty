@@ -12,7 +12,7 @@ export async function GET(request) {
           }
         }
       },
-      orderBy: { created_at: "desc" },
+      orderBy: { happened_on: "desc" },
     });
     return new Response(JSON.stringify({ response }), { status: 200 });
   } catch (e) {

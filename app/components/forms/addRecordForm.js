@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddRecordStepOne from "./addRecordStepOne";
 import AddRecordStepTwo from "./addRecordStepTwo";
+import { format } from "date-fns";
 
 export default function AddRecordForm({ open, setOpen }) {
   const [step, setStep] = useState({
@@ -11,7 +12,7 @@ export default function AddRecordForm({ open, setOpen }) {
     transaction_type: "income",
     amount: "",
     type: "",
-    happened_on: new Date(),
+    happened_on: format(new Date(), "yyyy-MM-dd"),
     notes: ""
   });
 

@@ -87,8 +87,6 @@ export default function AddRecordStepTwo({
       return;
     }
 
-    console.log(formInputs)
-
     const response = await axios.post("/api/record", {
       ...formInputs,
       property: formInputs.property.id,
@@ -159,7 +157,7 @@ export default function AddRecordStepTwo({
             label="Amount ($)"
             type="number"
             placeholder={
-              formInputs.transaction_type === "income" ? "5000" : "320"
+              formInputs.transaction_type === "income" ? "5,000" : "320"
             }
             value={formInputs.amount}
             onChangeHandler={onInputHandler}

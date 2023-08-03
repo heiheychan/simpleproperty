@@ -15,6 +15,7 @@ export const recordTableColumns = [
         </div>
       );
     },
+    width: 100
   },
   {
     Header: "Type",
@@ -26,25 +27,33 @@ export const recordTableColumns = [
     Cell: ({ cell, row }) => {
       const tran_type = row.original.transaction_type;
       if (tran_type === "income") {
-        return <p className="text-green-500">+{cell.value}</p>;
+        return (
+          <div className="bg-green-600 rounded-lg px-2 py-1">
+            <p className="text-white">
+              +{cell.value.toLocaleString("en-US")}
+            </p>
+          </div>
+        );
       } else {
-        return <p className="text-red-500">-{cell.value}</p>;
+        return (
+          <div className="bg-red-600 rounded-lg px-2 py-1">
+            <p className="text-white">
+              -{cell.value.toLocaleString("en-US")}
+            </p>
+          </div>
+        );
       }
     },
+    width: 80,
   },
   {
     Header: "Notes",
     accessor: "notes",
-    minWidth: 200
+    minWidth: 200,
   },
   {
     Header: "Happened on",
     accessor: "happened_on",
     Cell: ({ cell }) => format(new Date(cell.value), "MM/dd/yyyy"),
-  },
-  {
-    Header: "Updated at",
-    accessor: "updated_at",
-    Cell: ({ cell, row }) => format(new Date(cell.value), "MM/dd/yyyy"),
   },
 ];
