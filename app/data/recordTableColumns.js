@@ -2,6 +2,21 @@ import { format } from "date-fns";
 
 export const recordTableColumns = [
   {
+    Header: "Property",
+    accessor: "property.display_name",
+    Cell: ({ cell, row }) => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <div
+            className="w-3 h-3 rounded-full border border-gray-900"
+            style={{ backgroundColor: row.original.property.color }}
+          ></div>
+          {cell.value}
+        </div>
+      );
+    },
+  },
+  {
     Header: "Type",
     accessor: "type",
   },
@@ -10,7 +25,6 @@ export const recordTableColumns = [
     accessor: "amount",
     Cell: ({ cell, row }) => {
       const tran_type = row.original.transaction_type;
-      console.log("recordTableColumns - accessing data", tran_type);
       if (tran_type === "income") {
         return <p className="text-green-500">+{cell.value}</p>;
       } else {
@@ -21,11 +35,12 @@ export const recordTableColumns = [
   {
     Header: "Notes",
     accessor: "notes",
+    minWidth: 200
   },
   {
-    Header: "Created at",
-    accessor: "created_at",
-    Cell: ({ cell, row }) => format(new Date(cell.value), "MM/dd/yyyy"),
+    Header: "Happened on",
+    accessor: "happened_on",
+    Cell: ({ cell }) => format(new Date(cell.value), "MM/dd/yyyy"),
   },
   {
     Header: "Updated at",

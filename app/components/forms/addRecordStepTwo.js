@@ -87,7 +87,7 @@ export default function AddRecordStepTwo({
       return;
     }
 
-    console.log("addRecordStepTwo - before submitting: ", formInputs);
+    console.log(formInputs)
 
     const response = await axios.post("/api/record", {
       ...formInputs,
@@ -164,6 +164,13 @@ export default function AddRecordStepTwo({
             value={formInputs.amount}
             onChangeHandler={onInputHandler}
             name="amount"
+          />
+          <Input
+            label="Happened on"
+            type="date"
+            value={formInputs.happened_on}
+            onChangeHandler={onInputHandler}
+            name="happened_on"
           />
 
           <Input

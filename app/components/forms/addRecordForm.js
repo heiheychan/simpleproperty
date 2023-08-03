@@ -11,6 +11,7 @@ export default function AddRecordForm({ open, setOpen }) {
     transaction_type: "income",
     amount: "",
     type: "",
+    happened_on: new Date(),
     notes: ""
   });
 

@@ -1,4 +1,5 @@
-import { useTable } from "react-table";
+import { useState } from "react";
+import { useTable, useGlobalFilter } from "react-table";
 
 export default function DataTable({ data, columns }) {
   const {
@@ -7,16 +8,26 @@ export default function DataTable({ data, columns }) {
     headerGroups, // headerGroups, if your table has groupings
     rows, // rows for the table based on the data passed
     prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
-  } = useTable({
-    columns,
-    data,
-  });
+    state,
+    setGlobalFilter,
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useGlobalFilter
+  );
+  const { globalFilter } = state;
 
   return (
     <>
       <input
         className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100 text-black"
         placeholder="Search by the amount and summary"
+        value={globalFilter}
+        onChange={(e) => {
+          setGlobalFilter(e.target.value);
+        }}
       ></input>
       <div className="grow overflow-scroll">
         <table
@@ -26,8 +37,13 @@ export default function DataTable({ data, columns }) {
           <thead className="border-b">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th className="px-4 py-2" {...column.getHeaderProps()}>
+                {headerGroup.headers.map((column, index) => (
+                  <th
+                    className="px-4 py-2"
+                    {...column.getHeaderProps({
+                      style: { minWidth: column.minWidth, width: column.width },
+                    })}
+                  >
                     {column.render("Header")}
                   </th>
                 ))}
@@ -38,7 +54,7 @@ export default function DataTable({ data, columns }) {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr className="border-b border-gray-700 last:border-0" {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
                       <td className="px-4 py-2" {...cell.getCellProps()}>

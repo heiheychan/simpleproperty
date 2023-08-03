@@ -21,7 +21,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchRecords();
+    if (addMode === false) {
+      fetchRecords();
+    }
   }, [addMode]);
 
   return (
@@ -31,7 +33,7 @@ export default function Home() {
           <AddRecordForm open={addMode} setOpen={setAddMode} />
         </Modal>
       )}
-      <div className="flex justify-between mb-4">
+      <div className="flex flex-row justify-between mb-4">
         <div className="flex">
           <h2>Activities</h2>
           <input className="rounded-lg ml-4" />
@@ -49,7 +51,7 @@ export default function Home() {
       </div>
       <KeyMetrics />
       {/* Table section */}
-      <div className="grow overflow-scroll flex flex-col">
+      <div className="grow flex flex-col overflow-scroll">
         <div className="flex mb-4 items-center">
           <h4>All Records</h4>
           <h4 className="ml-4 text-gray-700">Recurring</h4>

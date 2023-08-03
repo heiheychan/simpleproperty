@@ -3,6 +3,15 @@ import { prisma } from "@/lib/db";
 export async function GET(request) {
   try {
     const response = await prisma.record.findMany({
+      include: {
+        property: {
+          select: {
+            color: true,
+            id: true,
+            display_name: true
+          }
+        }
+      },
       orderBy: { created_at: "desc" },
     });
     return new Response(JSON.stringify({ response }), { status: 200 });
@@ -21,6 +30,7 @@ export async function POST(request) {
         transaction_type: body.transaction_type,
         type: body.type,
         amount: +body.amount,
+        happened_on: new Date(body.happened_on),
         notes: body.notes,
       },
     });

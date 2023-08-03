@@ -30,6 +30,7 @@ model Record {
   notes                 String        @default("")
   propertyId            Int
   property              Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  happened_on           DateTime      @default(now())
 
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
