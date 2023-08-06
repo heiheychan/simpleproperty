@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BsGithub } from "react-icons/bs";
 
 export default function SideBar({ currentPage }) {
   return (
@@ -55,9 +56,20 @@ export default function SideBar({ currentPage }) {
             Settings
           </Link> */}
         </div>
-        {/* <button className="flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full border  text-red-500 font-bold border-red-500 ">
-          Sign out
-        </button> */}
+        <div className="flex flex-row justify-between items-center">
+          <Link
+            href="/about-me"
+            className="max-w-[180px] flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full border  text-green-500 font-bold border-green-500 "
+          >
+            About me
+          </Link>
+          <Link
+            href="https://github.com/heiheychan/simpleproperty"
+            target="_blank"
+          >
+            <BsGithub size={35} />
+          </Link>
+        </div>
       </div>
     </div>
   );
