@@ -6,9 +6,10 @@ export default function SideBar({ currentPage }) {
       <div className="p-6 border-b-2 border-gray-800">
         <div className="flex flex-row justify-start items-center">
           <div className="h-10 w-10 rounded-full border flex justify-center items-center">
-            B
+            D
           </div>
-          <h5 className="ml-2">Bill</h5>
+          <h5 className="ml-2">Demo</h5>
+          <p className="text-xs ml-2">Feel free to play around!</p>
         </div>
       </div>
       <div className="p-6 grow flex flex-col justify-between">
@@ -21,22 +22,22 @@ export default function SideBar({ currentPage }) {
           >
             Activities
           </Link>
-          <Link
+          {/* <Link
             href="#"
             className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
               currentPage === "directory" && "bg-gray-700"
             }`}
           >
             Directory
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             href="#"
             className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
               currentPage === "leases" && "bg-gray-700"
             }`}
           >
             Leases
-          </Link>
+          </Link> */}
           <Link
             href="/properties"
             className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
@@ -45,18 +46,18 @@ export default function SideBar({ currentPage }) {
           >
             Properties
           </Link>
-          <Link
+          {/* <Link
             href="#"
             className={`flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full font-bold hover:bg-gray-700 ${
               currentPage === "settings" && "bg-gray-700"
             }`}
           >
             Settings
-          </Link>
+          </Link> */}
         </div>
-        <button className="flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full border  text-red-500 font-bold border-red-500 ">
+        {/* <button className="flex items-center mb-2 text-left h-12 pl-4 rounded-lg w-full border  text-red-500 font-bold border-red-500 ">
           Sign out
-        </button>
+        </button> */}
       </div>
     </div>
   );

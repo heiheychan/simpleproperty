@@ -8,6 +8,7 @@ import { useEffect, useState, useMemo } from "react";
 import { MultiSelect } from "react-multi-select-component";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 import DataTable from "./components/dataTable";
 import KeyMetrics from "./components/keyMetrics";
@@ -32,17 +33,64 @@ export default function Home() {
   ]);
   const [propertyList, setPropertyList] = useState([]);
   const columns = useMemo(() => recordTableColumns, []);
+  const [exportData, setExportData] = useState([]);
 
-  const fetchRecords = async (searchParams) => {
-    
+  const fetchRecords = async () => {
     let searchParamsString = "";
+    let searchParams = [];
+
+    if (selected && selected.length > 0) {
+      let tempArray = [];
+      selected.forEach((property) => {
+        tempArray.push(String(property.value));
+      });
+      searchParams.push("property=" + tempArray.join("_"));
+    }
+
+    if (dateRange && dateRange[0]) {
+      searchParams.push(
+        `startdate=${String(format(new Date(dateRange[0]), "yyyy-MM-dd"))}`
+      );
+    }
+
+    if (dateRange && dateRange[1]) {
+      searchParams.push(
+        `enddate=${String(format(new Date(dateRange[1]), "yyyy-MM-dd"))}`
+      );
+    }
 
     if (searchParams) {
-      searchParamsString = `?${searchParams}`;
+      searchParamsString = `?${searchParams.join("&")}`;
     }
 
     const response = await axios.get(`/api/record${searchParamsString}`);
     setRecords(response.data.response);
+
+    const csvData = [
+      [
+        "id",
+        "property",
+        "transaction_type",
+        "type",
+        "amount",
+        "notes",
+        "happned_on",
+        "created_at",
+        "updated_at",
+      ],
+      ...response.data.response.map((ele) => [
+        ele.id,
+        ele.property.display_name,
+        ele.transaction_type,
+        ele.type,
+        ele.amount,
+        ele.notes,
+        ele.happened_on,
+        ele.created_at,
+        ele.updated_at,
+      ]),
+    ];
+    setExportData(csvData);
     const [income, expense, net] = metricsCalculator(response.data.response);
     setMetrics({
       income,
@@ -52,7 +100,6 @@ export default function Home() {
   };
 
   const fetchProperties = async () => {
-    
     const options = [];
     const response = await axios.get("api/property");
 
@@ -75,34 +122,40 @@ export default function Home() {
     if (addMode === false) {
       onFilterHandler();
     }
-  }, [addMode]);
+  }, [addMode, propertyList]);
 
   const onFilterHandler = () => {
-    let searchParams = [];
+    fetchRecords();
+  };
 
-    if (selected && selected.length > 0) {
-      let tempArray = [];
-      selected.forEach((property) => {
-        tempArray.push(property.value);
-      });
-      searchParams.push("property=" + tempArray.join("_"));
+  const deleteRecordHandler = async (id) => {
+    const response = await axios.delete(`/api/record/${id}`);
+    if (response.status === 200) {
+      toast.success("Record deleted");
+      window.location.reload();
     }
+  };
 
-    if (dateRange[0]) {
-      console.log(format(new Date(dateRange[0]), "yyyy-MM-dd"))
-      searchParams.push(
-        `startdate=${String(format(new Date(dateRange[0]), "yyyy-MM-dd"))}`
-      );
-    }
-
-    if (dateRange[1]) {
-      console.log(format(new Date(dateRange[1]), "yyyy-MM-dd"))
-      searchParams.push(
-        `enddate=${String(format(new Date(dateRange[1]), "yyyy-MM-dd"))}`
-      );
-    }
-
-    fetchRecords(searchParams.join("&"));
+  const tableHooks = (hooks) => {
+    hooks.visibleColumns.push((columns) => [
+      ...columns,
+      {
+        id: "Edit",
+        Header: "Action",
+        Cell: ({ row }) => {
+          return (
+            <div
+              className="text-red-500 border border-red-500 rounded-lg px-2 py-1 w-[50%] cursor-pointer"
+              onClick={() => {
+                deleteRecordHandler(row.original.id);
+              }}
+            >
+              Delete
+            </div>
+          );
+        },
+      },
+    ]);
   };
 
   return (
@@ -153,7 +206,14 @@ export default function Home() {
           <h4>All Records</h4>
           {/* <h4 className="ml-4 text-gray-700">Recurring</h4> */}
         </div>
-        {records && <DataTable data={records} columns={columns} />}
+        {records && (
+          <DataTable
+            tableHooks={tableHooks}
+            data={records}
+            columns={columns}
+            exportData={exportData}
+          />
+        )}
       </div>
     </MainLayout>
   );

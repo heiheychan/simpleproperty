@@ -1,6 +1,8 @@
 import { useTable, useGlobalFilter } from "react-table";
 
-export default function DataTable({ data, columns }) {
+import { CSVLink } from "react-csv";
+
+export default function DataTable({ tableHooks, data, columns, exportData }) {
   const {
     getTableProps, // table props from react-table
     getTableBodyProps, // table body props from react-table
@@ -14,7 +16,8 @@ export default function DataTable({ data, columns }) {
       columns,
       data,
     },
-    useGlobalFilter
+    useGlobalFilter,
+    tableHooks
   );
   const { globalFilter } = state;
 
@@ -81,9 +84,13 @@ export default function DataTable({ data, columns }) {
           </tbody>
         </table>
         <div>
-          <button className="px-4 border rounded-lg h-8 text-sm">
+          <CSVLink
+            className="px-4 py-1 border rounded-lg h-8 text-sm"
+            filename="property-records.csv"
+            data={exportData}
+          >
             Export all fitlered
-          </button>
+          </CSVLink>
         </div>
       </div>
     </>

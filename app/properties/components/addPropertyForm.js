@@ -2,7 +2,7 @@
 
 import Input from "@/app/components/ui/Input";
 import Spinner from "@/app/components/ui/Spinner";
-import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+// import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -16,11 +16,11 @@ export default function AddPropertyForm({ open, setOpen }) {
     color: "#" + Math.floor(Math.random() * 16777215).toString(16),
   });
   const [loading, setLoading] = useState(false);
-  const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
-    usePlacesService({
-      debounce: 500,
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACE_API,
-    });
+  // const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
+  //   usePlacesService({
+  //     debounce: 500,
+  //     apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACE_API,
+  //   });
 
   useEffect(() => {
     setFormInputs({
@@ -29,7 +29,7 @@ export default function AddPropertyForm({ open, setOpen }) {
       unit: "",
       color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     });
-    getPlacePredictions("");
+    // getPlacePredictions("");
   }, [open]);
 
   const onInputHandler = (e) => {
@@ -40,7 +40,7 @@ export default function AddPropertyForm({ open, setOpen }) {
 
   const onAddressInputHandler = (e) => {
     const copyFormInputs = { ...formInputs };
-    getPlacePredictions({ input: e.target.value });
+    // getPlacePredictions({ input: e.target.value });
     copyFormInputs[e.target.name] = e.target.value;
     setFormInputs(copyFormInputs);
   };
@@ -92,11 +92,11 @@ export default function AddPropertyForm({ open, setOpen }) {
     }
   };
 
-  const setValueHandler = (key, val) => {
-    let copyInput = { ...formInputs };
-    copyInput[key] = val;
-    setFormInputs(copyInput);
-  };
+  // const setValueHandler = (key, val) => {
+  //   let copyInput = { ...formInputs };
+  //   copyInput[key] = val;
+  //   setFormInputs(copyInput);
+  // };
 
   return (
     <>
@@ -115,11 +115,11 @@ export default function AddPropertyForm({ open, setOpen }) {
           label="Address"
           placeholder="55 Fleet St, Brooklyn, NY 11201"
           onChangeHandler={onAddressInputHandler}
-          setValue={setValueHandler}
+          // setValue={setValueHandler}
           value={formInputs.address}
-          loading={isPlacePredictionsLoading}
-          suggestions={placePredictions}
-          setSuggestions={getPlacePredictions}
+          // loading={isPlacePredictionsLoading}
+          // suggestions={placePredictions}
+          // setSuggestions={getPlacePredictions}
         />
         <Input
           type="text"

@@ -8,7 +8,7 @@ export const recordTableColumns = [
       return (
         <div className="flex flex-row gap-2 items-center">
           <div
-            className="w-3 h-3 rounded-full border border-gray-900"
+            className="w-3 h-3 rounded-full border border-gray-500"
             style={{ backgroundColor: row.original.property.color }}
           ></div>
           {cell.value}
